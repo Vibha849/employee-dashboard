@@ -25,7 +25,7 @@ def load_data(path):
     except:
         return pd.read_csv(path, encoding="latin1")
 
-csv_path = r""C:\Users\USER\Documents\Import_Emp_Data (1).csv"
+csv_path = r"C:\Users\USER\Documents\Import_Emp_Data (1).csv"
 df = load_data(csv_path)
 
 # Cleanup whitespace
@@ -89,6 +89,7 @@ st.download_button(
     file_name="filtered_employee_data.csv",
     mime="text/csv"
 )
+
 
 
 
