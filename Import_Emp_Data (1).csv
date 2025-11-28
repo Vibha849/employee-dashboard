@@ -1,0 +1,38 @@
+Employee Name,Employee Code,PIP Date,Level,Supervisor Name,Location,EmployeeID,Total Talktime,Total Connected,Total Cold Call,Total Cold Connected,Unique Cold Connected,Calls(>3 mins),Site Visit Done,Meetings Done,SV Planned
+Ajay Bhagwanrao Jadhav,SQY57499,,T0,Akash Atul Dubey,Pune - One HQ World Square,134896,6197.22,4813,8916,4471,4227,294,11,8,53
+Kartik Anna Bhokare,SQY57709,,T2,Kartik Anna Bhokare,Pune - One HQ World Square,135404,216.07,222,385,217,209,12,1,0,4
+Omkar Hanmant Lokhande,SQY57747,,T0,Kartik Anna Bhokare,Pune - One HQ World Square,135460,7022.28,5035,7990,4352,3887,349,11,35,129
+Shubham Nandkishor Harer,SQY57760,,T0,Kartik Anna Bhokare,Pune - One HQ World Square,135479,8193.75,8261,14039,7553,6938,304,17,30,51
+Vaishnav Shravan Bandgar,SQY57768,,T0,Kunal Sanjay Darkonde,Pune - One HQ World Square,135491,6290.77,9144,13839,7722,6691,133,6,17,28
+Vikas Singh,SQY57770,,T3,Vikas Singh,Pune - One HQ World Square,135495,0.15,1,1,1,1,0,0,0,0
+Akash Bhgirath Ghodekar,SQY57775,,T0,Akash Atul Dubey,Pune - One HQ World Square,135501,8303,9902,17773,9120,8600,277,17,21,118
+Amar Sunilpant Nimkar,SQY57777,,T0,Kartik Anna Bhokare,Pune - One HQ World Square,135503,6903.98,7779,13819,7145,6458,280,17,30,93
+Rahul Dagdu Dhavale,SQY57813,,T0,Kartik Anna Bhokare,Pune - One HQ World Square,135542,8110,6955,11400,6179,5870,338,16,36,147
+Savi Sanjay Khade,SQY57822,,T0,Akash Atul Dubey,Pune - One HQ World Square,135551,7569.65,7259,11135,6757,6073,318,10,17,72
+Swaraj Kamlakar Wade,SQY57836,,T0,Kartik Anna Bhokare,Pune - One HQ World Square,135565,7110.27,4904,7355,4476,3565,360,9,16,86
+Sanket Patil,SQY57855,,T0,Akash Atul Dubey,Pune - One HQ World Square,135585,8076.87,4949,7292,4508,3601,421,17,25,18
+Tejashri Prashantrao Mahalle,SQY57867,,T0,Akash Atul Dubey,Pune - One HQ World Square,135597,6764.68,6680,10481,6132,5599,233,9,17,66
+Shyam Ashok Jawale,SQY57878,,T0,Akash Atul Dubey,Pune - One HQ World Square,135608,6502.32,4824,8786,4463,3750,291,18,33,14
+Akash Atul Dubey,SQY57892,,T2,Akash Atul Dubey,Pune - One HQ World Square,135625,305.47,244,371,218,215,21,5,0,10
+Panchal Mangesh Shivaji,SQY58028,,T0,Kartik Anna Bhokare,Pune - One HQ World Square,136164,6933.52,6959,11020,6472,6068,244,12,37,52
+Abhishek Balkrishna Wagh,SQY58069,,T0,Akash Atul Dubey,Pune - One HQ World Square,136215,6757.9,7055,12509,6739,6093,219,8,23,51
+Kunal Sanjay Darkonde,SQY58148,,T2,Kunal Sanjay Darkonde,Pune - One HQ World Square,136456,136.3,92,157,90,89,10,5,2,4
+Borhade Rahul Anil,SQY58169,,T0,Kunal Sanjay Darkonde,Pune - One HQ World Square,136483,4162.83,4274,7076,4221,3647,210,11,9,43
+Indrajeet Devendra Lodha,SQY58180,,TE,Kunal Sanjay Darkonde,Pune - One HQ World Square,136495,569.33,366,675,302,279,27,4,7,7
+Prasad Shrikrushna Kadam,SQY58378,,T0,Kunal Sanjay Darkonde,Pune - One HQ World Square,137202,3837.7,4054,8111,3867,3531,150,6,35,39
+Ajay Premraj Chavhan,SQY58490,,T0,Akash Atul Dubey,Pune - One HQ World Square,137652,1537.57,1656,3320,1579,1523,62,1,0,20
+Ashay Choudhary,SQY58497,,T0,Akash Atul Dubey,Pune - One HQ World Square,137661,2405.52,3009,5520,2693,2635,72,3,7,29
+Saurabh Kishor Pawar,SQY58520,,T0,Akash Atul Dubey,Pune - One HQ World Square,137705,8.42,20,51,20,19,0,0,0,0
+Abhijeet Bhagwat Khobre,SQY58535,,T0,Kartik Anna Bhokare,Pune - One HQ World Square,137728,3283.58,2570,5072,2392,2289,147,2,9,36
+Krishna Siyaram Chauhan,SQY58553,,T0,Kunal Sanjay Darkonde,Pune - One HQ World Square,137751,2356.28,3394,5792,3141,2942,42,5,4,15
+Lucky Chandnani,SQY58554,,T0,Kartik Anna Bhokare,Pune - One HQ World Square,137752,3888.97,3286,4287,2947,2561,142,3,20,56
+Sandesh Hiremath,SQY58571,,T0,Kartik Anna Bhokare,Pune - One HQ World Square,137772,2953.08,2535,4477,2280,2023,148,7,32,48
+Atul Chand Kaushik,SQY58601,,T0,Kartik Anna Bhokare,Pune - One HQ World Square,137818,1697.33,1461,2991,1319,1255,65,3,33,31
+Komal Suresh Lone,SQY58609,,T0,Kunal Sanjay Darkonde,Pune - One HQ World Square,137826,3769.8,4047,7888,3975,3714,174,5,7,18
+Sagar Sham Chavan,SQY58615,,TE,Kartik Anna Bhokare,Pune - One HQ World Square,137832,2284.22,3463,5589,3148,2991,43,2,6,20
+Ganesh Vilas Katare,SQY58685,,T0,Kunal Sanjay Darkonde,Pune - One HQ World Square,138031,2768.82,3174,5672,2948,2841,110,4,8,38
+Rajat Ravindra Kadam,SQY58749,,T0,Akash Atul Dubey,Pune - One HQ World Square,138129,835.5,691,1172,667,659,22,2,4,3
+Rohan Rambhagvan Wadgaonkar,SQY58753,,T0,Akash Atul Dubey,Pune - One HQ World Square,138133,1323.18,2125,3073,2067,1804,36,4,2,19
+Shubham Uday Chavan,SQY58765,,T0,Akash Atul Dubey,Pune - One HQ World Square,138145,1467.92,1794,2679,1721,1641,49,6,1,26
+Tejas Sanjay Pungle,SQY58767,,T0,Akash Atul Dubey,Pune - One HQ World Square,138148,1929.13,3086,4804,2977,2673,54,2,4,26
+Yash Atul Salagare,SQY58816,,T0,Akash Atul Dubey,Pune - One HQ World Square,138332,1066.02,1022,1562,994,925,44,0,5,9
