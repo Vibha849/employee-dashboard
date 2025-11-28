@@ -1,99 +1,184 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 
+# ------------------------------------------------------------
+# Page Setup
+# ------------------------------------------------------------
 st.set_page_config(page_title="Employee Performance Dashboard", layout="wide")
 st.title("📊 Employee Performance Dashboard")
 
-# -------------------------------------------
-# Exact column mapping (based on your screenshot)
-# -------------------------------------------
-COLUMN_MAP = {
-    "talk": "Total Talktime",
-    "connect": "Total Connected",
-    "calls_gt_3": "Calls(>3 mins)",
-    "sv_done": "Site Visit Done",
-    "sv_planned": "SV Planned",
-}
-
-# -------------------------------------------
+# ------------------------------------------------------------
 # Load CSV
-# -------------------------------------------
-@st.cache_data
-def load_data(path):
-    try:
-        return pd.read_csv(path)
-    except:
-        return pd.read_csv(path, encoding="latin1")
+# ------------------------------------------------------------
+uploaded_file = st.file_uploader("Upload Employee CSV File", type=["csv"])
 
-csv_path = "Import_Emp_Data (1).csv"
+if uploaded_file:
+    df = pd.read_csv(uploaded_file)
 
-df = load_data(csv_path)
+    # ------------------------------------------------------------
+    # Robust KPI column detection
+    # ------------------------------------------------------------
+    def find_column(df, possible_names):
+        """Return first matching column from possible_names in df, ignoring spaces, underscores, and case."""
+        cols_clean = {c.lower().replace(" ", "").replace("_",""): c for c in df.columns}
+        for name in possible_names:
+            key = name.lower().replace(" ", "").replace("_","")
+            if key in cols_clean:
+                return cols_clean[key]
+        return None
 
-# Cleanup whitespace
-df.columns = [str(c).strip() for c in df.columns]
+    kpi_columns = {
+        "Total Talk Time": find_column(df, ["Total Talktime", "totaltalktime"]),
+        "Total Connected": find_column(df, ["Total Connected", "totalconnected"]),
+        "Total Cold Connected": find_column(df, ["Total Cold Connected", "totalcoldconnected"]),
+        "Unique Cold Connected": find_column(df, ["Unique Cold Connected", "uniquecoldconnected"]),
+        "Site Visit Done": find_column(df, ["Site Visit Done", "sitevisitdone"]),
+        "Meetings Done": find_column(df, ["Meetings Done", "meetingsdone"]),
+        "SV Planned": find_column(df, ["SV Planned", "svplanned"]),
+        "Calls > 3 mins": find_column(df, ["Calls(>3 mins)", "calls>3mins", "calls>3min"])
+    }
 
-# -------------------------------------------
-# Sidebar Filters
-# -------------------------------------------
-name_col = "Employee Name"
-level_col = "Level"
-supervisor_col = "Supervisor Name"
+    # ------------------------------------------------------------
+    # Sidebar Filters
+    # ------------------------------------------------------------
+    st.sidebar.header("🔍 Filters")
+    emp_filter = st.sidebar.multiselect(
+        "Select Employee",
+        options=df["Employee Name"].unique()
+    )
+    sup_filter = st.sidebar.multiselect(
+        "Select Supervisor",
+        options=df["Supervisor Name"].unique()
+    )
+    loc_filter = st.sidebar.multiselect(
+        "Select Location",
+        options=df["Location"].unique()
+    )
 
-st.sidebar.header("🔍 Filters")
+    filtered = df.copy()
+    if emp_filter:
+        filtered = filtered[filtered["Employee Name"].isin(emp_filter)]
+    if sup_filter:
+        filtered = filtered[filtered["Supervisor Name"].isin(sup_filter)]
+    if loc_filter:
+        filtered = filtered[filtered["Location"].isin(loc_filter)]
 
-levels = sorted(df[level_col].dropna().unique()) if level_col in df.columns else []
-supervisors = sorted(df[supervisor_col].dropna().unique()) if supervisor_col in df.columns else []
+    # ------------------------------------------------------------
+    # KPI ROW 1
+    # ------------------------------------------------------------
+    kpi1, kpi2, kpi3 = st.columns(3)
+    kpi1.metric("Total Employees", f"{len(filtered):,}")
+    kpi2.metric("Unique Supervisors", f"{filtered['Supervisor Name'].nunique():,}")
+    kpi3.metric("Total Locations", f"{filtered['Location'].nunique():,}")
 
-selected_levels = st.sidebar.multiselect("Filter by Level", levels)
-selected_supervisors = st.sidebar.multiselect("Filter by Supervisor", supervisors)
-search_name = st.sidebar.text_input("Search Employee Name")
+    st.markdown("---")
 
-filtered_df = df.copy()
+    # ------------------------------------------------------------
+    # Employee Card
+    # ------------------------------------------------------------
+    st.subheader("👤 Employee Card")
+    selected_emp = st.selectbox("Choose an employee", filtered["Employee Name"].unique())
+    emp = filtered[filtered["Employee Name"] == selected_emp].iloc[0]
 
-if selected_levels:
-    filtered_df = filtered_df[filtered_df[level_col].isin(selected_levels)]
+    st.markdown(
+        f"""
+        <div style="
+            padding: 20px;
+            border-radius: 12px;
+            background-color: #2c2c2c;
+            color: white;
+        ">
+            <h3 style="margin:0;">{emp['Employee Name']}</h3>
+            <p>🔖 <strong>Employee ID:</strong> {emp['Employee Code']}</p>
+            <p>⭐ <strong>Level:</strong> {emp['Level']}</p>
+            <p>👨‍💼 <strong>Supervisor:</strong> {emp['Supervisor Name']}</p>
+            <p>📍 <strong>Location:</strong> {emp['Location']}</p>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
-if selected_supervisors:
-    filtered_df = filtered_df[filtered_df[supervisor_col].isin(selected_supervisors)]
+    st.markdown("---")
 
-if search_name:
-    filtered_df = filtered_df[filtered_df[name_col].str.contains(search_name, case=False, na=False)]
+    # ------------------------------------------------------------
+    # Function to get KPI value safely
+    # ------------------------------------------------------------
+    def get_kpi_value(kpi_name):
+        col = kpi_columns.get(kpi_name)
+        return emp[col] if col and col in emp.index else 0
 
-# -------------------------------------------
-# Summary KPIs
-# -------------------------------------------
-st.subheader("📈 Summary Metrics")
+    # ------------------------------------------------------------
+    # Function to format KPI value with color
+    # ------------------------------------------------------------
+    def format_metric(value):
+        formatted = f"{value:,}"
+        color = "green" if value > 0 else "red"
+        return f"<span style='color:{color}; font-weight:bold'>{formatted}</span>"
 
-def safe_sum(col):
-    return filtered_df[col].fillna(0).astype(float).sum() if col in filtered_df.columns else 0
+    # ------------------------------------------------------------
+    # KPI ROW 2
+    # ------------------------------------------------------------
+    n1, n2, n3, n4 = st.columns([2,2,2,2])
+    n5, n6, n7, n8 = st.columns([2,2,2,2])
 
-col1, col2, col3, col4, col5 = st.columns(5)
+    n1.metric("Total Talk Time", f"{get_kpi_value('Total Talk Time'):,}")
+    n2.metric("Total Connected", f"{get_kpi_value('Total Connected'):,}")
+    n3.metric("Total Cold Connected", f"{get_kpi_value('Total Cold Connected'):,}")
+    n4.metric("Unique Cold Connected", f"{get_kpi_value('Unique Cold Connected'):,}")
 
-col1.metric("Total Talktime", round(safe_sum(COLUMN_MAP["talk"]), 2))
-col2.metric("Total Connected", int(safe_sum(COLUMN_MAP["connect"])))
-col3.metric("Calls > 3 mins", int(safe_sum(COLUMN_MAP["calls_gt_3"])))
-col4.metric("Site Visit Done", int(safe_sum(COLUMN_MAP["sv_done"])))
-col5.metric("SV Planned", int(safe_sum(COLUMN_MAP["sv_planned"])))
+    n5.metric("Site Visit Done", f"{get_kpi_value('Site Visit Done'):,}")
+    n6.metric("Meetings Done", f"{get_kpi_value('Meetings Done'):,}")
+    n7.metric("SV Planned", f"{get_kpi_value('SV Planned'):,}")
+    n8.metric("Calls > 3 mins", f"{get_kpi_value('Calls > 3 mins'):,}")
 
-# -------------------------------------------
-# Data Table
-# -------------------------------------------
-st.subheader("📄 Employee Data Table")
-st.dataframe(filtered_df, use_container_width=True)
+    st.markdown("---")
 
-# -------------------------------------------
-# Download Button
-# -------------------------------------------
-st.download_button(
-    label="⬇ Download Filtered Data",
-    data=filtered_df.to_csv(index=False),
-    file_name="filtered_employee_data.csv",
-    mime="text/csv"
-)
+    # ------------------------------------------------------------
+    # KPI Charts
+    # ------------------------------------------------------------
+    st.subheader("📈 KPI Visual Insights")
 
+    connected_df = pd.DataFrame({
+        "Metric": ["Total Connected", "Total Cold Connected", "Unique Cold Connected"],
+        "Value": [
+            get_kpi_value("Total Connected"),
+            get_kpi_value("Total Cold Connected"),
+            get_kpi_value("Unique Cold Connected")
+        ]
+    })
+    fig1 = px.bar(connected_df, x="Metric", y="Value",
+                  title="Connected Call Metrics",
+                  text="Value",
+                  color="Value",
+                  color_continuous_scale=px.colors.sequential.Teal)
 
+    productivity_df = pd.DataFrame({
+        "Metric": ["Meetings Done", "SV Planned", "Site Visit Done"],
+        "Value": [
+            get_kpi_value("Meetings Done"),
+            get_kpi_value("SV Planned"),
+            get_kpi_value("Site Visit Done")
+        ]
+    })
+    fig2 = px.bar(productivity_df, x="Metric", y="Value",
+                  title="Meetings & Site Visits",
+                  text="Value",
+                  color="Value",
+                  color_continuous_scale=px.colors.sequential.Viridis)
 
+    c1, c2 = st.columns(2)
+    c1.plotly_chart(fig1, use_container_width=True)
+    c2.plotly_chart(fig2, use_container_width=True)
 
+    st.markdown("---")
 
+    # ------------------------------------------------------------
+    # Employee Table
+    # ------------------------------------------------------------
+    table_cols = ["Employee Name", "Level", "Supervisor Name", "Location"]
+    st.subheader("📋 Employee Table")
+    st.dataframe(filtered[table_cols], use_container_width=True)
 
-
+else:
+    st.info("📥 Please upload your employee CSV file to begin.")
